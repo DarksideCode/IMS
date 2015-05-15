@@ -14,6 +14,66 @@ $form = $this->beginWidget('booster.widgets.TbActiveForm', array(
         ));
 ?>
 
+<?php
+echo $form->textFieldGroup($model, 'username', array(
+    'value' => '',
+    'wrapperHtmlOptions' => array(
+        'class' => 'col-sm-5',
+    ),
+    'widgetOptions' => array(
+        'htmlOptions' => array(
+            'placeholder' => 'login',
+        ),
+    ),
+));
+?>
+
+<?php
+    echo $form->passwordFieldGroup($model, 'password');
+?>
+
+<?php
+echo $form->textFieldGroup($model, 'email', array(
+    'value' => '',
+    'wrapperHtmlOptions' => array(
+        'class' => 'col-sm-5',
+    ),
+    'widgetOptions' => array(
+        'htmlOptions' => array(
+            'placeholder' => 'e-mail',
+        ),
+    ),
+));
+?>
+
+<?php
+echo $form->textFieldGroup($model, 'firstname', array(
+    'value' => '',
+    'wrapperHtmlOptions' => array(
+        'class' => 'col-sm-5',
+    ),
+    'widgetOptions' => array(
+        'htmlOptions' => array(
+            'placeholder' => 'Vorname',
+        ),
+    ),
+));
+?>
+
+<?php
+echo $form->textFieldGroup($model, 'lastname', array(
+    'value' => '',
+    'wrapperHtmlOptions' => array(
+        'class' => 'col-sm-5',
+    ),
+    'widgetOptions' => array(
+        'htmlOptions' => array(
+            'placeholder' => 'Nachnahme',
+        ),
+    ),
+));
+?>
+
 <div class="row buttons">
     <?php
     $this->widget('booster.widgets.TbButton', array(

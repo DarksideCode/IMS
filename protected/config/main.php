@@ -14,7 +14,7 @@ return array(
     // preloading 'log' component
     'preload' => array(
         'log',
-//        'bootstrap',
+        'bootstrap',
     ),
     // autoloading model and component classes
     'import' => array(
@@ -39,9 +39,9 @@ return array(
             // enable cookie-based authentication
             'allowAutoLogin' => true,
         ),
-//        'bootstrap' => array(
-//            'class' => 'extensions.yiibooster.components.Booster'
-//        ),
+        'bootstrap' => array(
+            'class' => 'ext.yiibooster.components.Booster'
+        ),
         // uncomment the following to enable URLs in path-format
         /*
           'urlManager'=>array(

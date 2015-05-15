@@ -113,14 +113,15 @@ class SiteController extends Controller
 	public function actionRegistration()
 	{
 		$model=new User;
-		if(isset($_POST['registerform']))
+		if(isset($_POST['User']))
 		{
-			$model->attributes=$_POST['registerform'];
+			$model->attributes=$_POST['User'];
 			if($model->validate())
 			{
-				
-				Yii::app()->user->setFlash('Registration','Thank you for your registration.');
-				$this->refresh();
+                                $model->save();
+
+                                Yii::app()->user->setFlash('Registration','Thank you for your registration.');
+                                $this->refresh();
 			}
 		}
 		$this->render('registration',array('model'=>$model));
