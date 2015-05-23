@@ -25,7 +25,10 @@
 	<div id="header">
 		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
 	</div><!-- header -->
-
+        <!-- sites in navigation
+        z.b. for site for registred user
+        array('label'=>'Site Name', 'url'=>array('view'), 'visible'=>!Yii::app()->user->isGuest),
+        -->
 	<div id="mainmenu">
 		<?php $this->widget('zii.widgets.CMenu',array(
 			'items'=>array(
@@ -34,7 +37,7 @@
 				array('label'=>'Contact', 'url'=>array('/site/contact')),
                                 array('label'=>'Registrieren', 'url'=>array('/site/registration'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
 			),
 		)); ?>
 	</div><!-- mainmenu -->

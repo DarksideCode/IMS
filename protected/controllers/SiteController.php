@@ -115,11 +115,19 @@ class SiteController extends Controller
 		$model=new User;
 		if(isset($_POST['User']))
 		{
+                        $_POST['User']['password'] = md5($_POST['User']['password']);
 			$model->attributes=$_POST['User'];
+
 			if($model->validate())
 			{
+                                /**
+                                 * save form in DB
+                                 */
                                 $model->save();
 
+                                /**
+                                 * display flash message
+                                 */
                                 Yii::app()->user->setFlash('Registration','Thank you for your registration.');
                                 $this->refresh();
 			}
