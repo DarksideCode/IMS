@@ -21,12 +21,10 @@ class UserIdentity extends CUserIdentity
             $model = User::model();
             $result = $model->findAll();
             foreach ($result as $value) {
-                $users[$value->username] = $value->password;
+                $users[$value->username]['password'] = $value->password;
+                $users[$value->username]['id'] = $value->id;
             }
-            
-//            print_r($users);
-//            die('##');
-            
+    
 //		$users=array(
 //			// username => password
 //			'demo'=>'demo1',
@@ -35,7 +33,7 @@ class UserIdentity extends CUserIdentity
 
 		if(!isset($users[$this->username]))
 			$this->errorCode=self::ERROR_USERNAME_INVALID;
-		elseif($users[$this->username]!==md5($this->password))
+		elseif($users[$this->username]['password']!==md5($this->password))
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else
 			$this->errorCode=self::ERROR_NONE;

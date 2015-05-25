@@ -29,8 +29,8 @@ class Information extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, title, content, author_id, category_id, timestamp', 'required'),
-			array('id, author_id, category_id', 'numerical', 'integerOnly'=>true),
+			array('title, content, author_id', 'required'),
+			array('author_id, category_id', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>150),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -57,10 +57,10 @@ class Information extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'title' => 'Title',
-			'content' => 'Content',
+			'content' => 'Inhalt',
 			'author_id' => 'Author',
 			'category_id' => 'Category',
-			'timestamp' => 'Timestamp',
+			'timestamp' => 'Datum',
 		);
 	}
 
