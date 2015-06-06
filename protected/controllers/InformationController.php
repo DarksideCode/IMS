@@ -12,13 +12,19 @@ class InformationController extends Controller {
     public function actionSave() {
         $model = new Information;
         $modelTags = new Tag;
+        $modelUser = new User;
+       
         if (isset($_POST['Information'])) {
 
+            $user = $modelUser->getUserByName($_POST['Information']['author_id'])->findAll();
+            $userID = $user[0]['id'];
+            
+            $_POST['Information']['author_id'] = $userID;
+            
             $model->attributes = $_POST['Information'];
             
+            //@todo saving in db don't work.
             if ($model->validate()) {
-                print_r($_POST['Information']);
-die('hi');
                 /**
                  * save form in DB
                  */
@@ -30,11 +36,13 @@ die('hi');
                     $informationID = $model->id; // this is inserted item id
                     $_POST['Tag']['information_id'] = $informationID;
 
-                    print_r($_POST['Tag']);
-                    die;
-                    
                     $modelTags->attributes = $_POST['Tag'];
-                    $modelTags->save();
+                    
+                    if ($modelTags->validate()) {
+                        $modelTags->save();
+                    } else {
+                        $error = $modelTags->errors;
+                    }
                 }
 
                 /**
@@ -42,6 +50,10 @@ die('hi');
                  */
                 Yii::app()->user->setFlash('save', 'Save complete.');
                 $this->refresh();
+            } else {
+                $error = $model->errors;
+                print_r($error);
+                die();
             }
         }
         $this->render('save', array('model' => $model, 'modelTags' => $modelTags));

@@ -31,7 +31,6 @@ class Information extends CActiveRecord
 		return array(
 			array('title, content, author_id', 'required'),
 			array('author_id, category_id', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>150),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, title, content, author_id, category_id, timestamp', 'safe', 'on'=>'search'),
@@ -46,6 +45,7 @@ class Information extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+                    'Tag'=>array(self::HAS_MANY, 'id', 'information_id'),
 		);
 	}
 

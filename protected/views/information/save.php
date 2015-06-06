@@ -37,35 +37,21 @@ echo $form->textFieldGroup($model, 'title', array(
 ?>
 
 <?php
-echo $form->textAreaGroup($model, 'content', array(
-    'value' => '',
+echo $form->ckEditorGroup(
+        $model, 'content', array(
     'wrapperHtmlOptions' => array(
         'class' => 'col-sm-5',
     ),
     'widgetOptions' => array(
-        'htmlOptions' => array(
-            'placeholder' => 'content',
-        ),
-    ),
-));
-?>
-
-<?php
-//echo $form->ckEditorGroup(
-//        $model, 'content', array(
-//    'wrapperHtmlOptions' => array(
-//   'class' => 'col-sm-5',
-//    ),
-//    'widgetOptions' => array(
-//        'editorOptions' => array(
-//            'fullpage' => 'js:true',
-//        /* 'width' => '640', */
-//        /* 'resize_maxWidth' => '640', */
-//        /* 'resize_minWidth' => '320' */
-//        )
-//    )
-//        )
-//);
+        'editorOptions' => array(
+            'fullpage' => 'js:true',
+        'width' => '640',
+        /* 'resize_maxWidth' => '640', */
+        /* 'resize_minWidth' => '320' */
+        )
+    )
+        )
+);
 ?>
 
 <!--@todo list with categorys--> 
@@ -115,5 +101,6 @@ echo $form->textFieldGroup($modelTags, 'designation', array(
     ?>
 </div>
 
+<!-- get current User-->
 <?php echo $form->hiddenField($model, 'author_id', array('value' => Yii::app()->user->id)); ?>
 <?php $this->endWidget(); ?>
