@@ -46,6 +46,8 @@ class Information extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
                     'Tag'=>array(self::HAS_MANY, 'id', 'information_id'),
+                    'Category'=>array(self::HAS_ONE, 'category_id', 'id'),
+                    'Information'=>array(self::HAS_ONE, 'author_id', 'id'),
 		);
 	}
 
