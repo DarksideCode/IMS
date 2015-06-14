@@ -56,22 +56,22 @@ echo $form->ckEditorGroup(
 
 <!--@todo list with categorys--> 
 <?php
-//echo $form->select2Group(
-//        $model, 'category_id', array(
-//    'wrapperHtmlOptions' => array(
-//        'class' => 'col-sm-5',
-//    ),
-//    'widgetOptions' => array(
-//        'asDropDownList' => false,
-//        'options' => array(
-//            'tags' => array('clever', 'is', 'better', 'clevertech'),
-//            'placeholder' => 'type clever, or is, or just type!',
-//            /* 'width' => '40%', */
-//            'tokenSeparators' => array(',', ' ')
-//        )
-//    )
-//        )
-//);
+echo $form->select2Group(
+        $model, 'category_id', array(
+    'wrapperHtmlOptions' => array(
+        'class' => 'col-sm-5',
+    ),
+    'widgetOptions' => array(
+        'asDropDownList' => true,
+        'data' => $categoryList,
+        'options' => array(
+            'placeholder' => 'Kategory',
+            /* 'width' => '40%', */
+            'tokenSeparators' => array(',', ' ')
+        )
+    )
+        )
+);
 ?>
 
 <?php
