@@ -40,13 +40,19 @@ class InformationController extends Controller {
                     $informationID = $model->id; // this is inserted item id
                     $_POST['Tag']['information_id'] = $informationID;
 
-                    $modelTags->attributes = $_POST['Tag'];
-
-                    if ($modelTags->validate()) {
-                        $modelTags->save();
-                    } else {
-                        $error = $modelTags->errors;
-                    }
+					foreach((explode(",",$_POST['Tag']['designation'])) as $value)
+					{
+						$modelTags = new Tag;
+						
+						$_POST['Tag']['designation'] = $value;
+						$modelTags->attributes = $_POST['Tag'];
+						
+						if ($modelTags->validate()) {
+							$modelTags->save();
+						} else {
+							$error = $modelTags->errors;
+						}
+					}
                 }
 
                 /**
@@ -96,5 +102,4 @@ class InformationController extends Controller {
         
         return $list;
     }
-
 }
