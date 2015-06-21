@@ -40,19 +40,18 @@ class InformationController extends Controller {
                     $informationID = $model->id; // this is inserted item id
                     $_POST['Tag']['information_id'] = $informationID;
 
-					foreach((explode(",",$_POST['Tag']['designation'])) as $value)
-					{
-						$modelTags = new Tag;
-						
-						$_POST['Tag']['designation'] = $value;
-						$modelTags->attributes = $_POST['Tag'];
-						
-						if ($modelTags->validate()) {
-							$modelTags->save();
-						} else {
-							$error = $modelTags->errors;
-						}
-					}
+                    foreach ((explode(",", $_POST['Tag']['designation'])) as $value) {
+                        $modelTags = new Tag;
+
+                        $_POST['Tag']['designation'] = $value;
+                        $modelTags->attributes = $_POST['Tag'];
+
+                        if ($modelTags->validate()) {
+                            $modelTags->save();
+                        } else {
+                            $error = $modelTags->errors;
+                        }
+                    }
                 }
 
                 /**
@@ -77,15 +76,15 @@ class InformationController extends Controller {
      */
     public function getData($tabel) {
         // set dataProvider for category list.
-        $count = Yii::app()->db->createCommand('SELECT COUNT(*) FROM '.$tabel)->queryScalar();
-        $sql = 'SELECT * FROM '.$tabel;
+        $count = Yii::app()->db->createCommand('SELECT COUNT(*) FROM ' . $tabel)->queryScalar();
+        $sql = 'SELECT * FROM ' . $tabel;
         $dataProvider = new CSqlDataProvider($sql, array(
             'totalItemCount' => $count,
         ));
-        
+
         return $dataProvider->getData();
     }
-    
+
     /**
      * formate array for select2Group widget
      * 
@@ -99,7 +98,8 @@ class InformationController extends Controller {
         foreach ($data as $value) {
             $list[$value[$key]] = $value[$index];
         }
-        
+
         return $list;
     }
+
 }
