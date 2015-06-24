@@ -27,13 +27,18 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-                if (!Yii::app()->user->isGuest){
-                    $this->redirect(array('information/index'));
-                } else {
-                    $this->render('index');
-                }
+		$rawData = Yii::app()->db->createCommand("SELECT information.id, title, designation, username, timestamp 
+												FROM `information`, `user`, `category` 
+												WHERE user.id = information.author_id 
+												AND category.id = information.category_id
+												ORDER BY information.id
+												DESC LIMIT 0,10")->queryAll();
+
+		if (!Yii::app()->user->isGuest){
+			$this->redirect(array('information/index', 'tableData'=>$rawData));
+		} else {
+			$this->render('index');
+		}
 	}
 
 	/**
