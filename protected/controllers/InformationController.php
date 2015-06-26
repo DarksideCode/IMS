@@ -48,7 +48,6 @@ class InformationController extends Controller {
         $categoryList = $this->formateArray($categoryList, 'id', 'designation');
 
         if (isset($_POST['Information'])) {
-
             $user = $modelUser->getUserByName($_POST['Information']['author_id'])->findAll();
             $userID = $user[0]['id'];
 
@@ -86,8 +85,8 @@ class InformationController extends Controller {
                 /**
                  * display flash message
                  */
-                Yii::app()->user->setFlash('save', 'Save complete.');
-                $this->refresh();
+                Yii::app()->user->setFlash('succses', 'Save complete.');
+                $this->redirect(array('information/index'));
             } else {
                 $error = $model->errors;
                 print_r($error);
