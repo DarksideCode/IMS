@@ -42,7 +42,7 @@ class Category extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-                    'Information'=>array(self::HAS_MANY, 'id', 'category_id'),
+                    'information'=>array(self::HAS_MANY, 'Information', array('category_id'=>'id')),
 		);
 	}
 
@@ -53,7 +53,7 @@ class Category extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'designation' => 'Designation',
+			'designation' => 'Kategorie',
 		);
 	}
 

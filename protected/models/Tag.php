@@ -4,6 +4,7 @@
  * This is the model class for table "tag".
  *
  * The followings are the available columns in table 'tag':
+ * @property integer $id
  * @property string $designation
  * @property integer $information_id
  */
@@ -30,7 +31,7 @@ class Tag extends CActiveRecord
 			array('designation', 'length', 'max'=>150),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('designation, information_id', 'safe', 'on'=>'search'),
+			array('id, designation, information_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -42,7 +43,7 @@ class Tag extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-                    'Information'=>array(self::HAS_ONE, 'information_id', 'id'),
+                    'information'=>array(self::HAS_ONE, 'Information', array('id'=>'information_id')),
 		);
 	}
 
@@ -52,7 +53,8 @@ class Tag extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'designation' => 'Designation',
+			'id' => 'ID',
+			'designation' => 'Tag',
 			'information_id' => 'Information',
 		);
 	}
@@ -75,6 +77,7 @@ class Tag extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->compare('id',$this->id);
 		$criteria->compare('designation',$this->designation,true);
 		$criteria->compare('information_id',$this->information_id);
 

@@ -3,7 +3,36 @@
 class InformationController extends Controller {
 
     public function actionIndex() {
-        $this->render('index');
+
+        $model = new Information;
+
+        $criteria = new CDbCriteria;
+
+        $criteria->alias = 'information';
+        $criteria->with = array(
+            'tag' => array(
+                'select' => false,
+                'alias' => 'tag',
+            ),
+            'category' => array(
+                'select' => false,
+                'alias' => 'category',
+            ),
+            'author' => array(
+                'select' => false,
+                'alias' => 'author',
+            ),
+        );
+        $criteria->order = 'timestamp DESC';
+
+        $DataProvider = new CActiveDataProvider($model, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 10,
+            ),
+        ));
+
+        $this->render('index', array('DataProvider' => $DataProvider));
     }
 
     /**

@@ -45,9 +45,9 @@ class Information extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-                    'Tag'=>array(self::HAS_MANY, 'id', 'information_id'),
-                    'Category'=>array(self::HAS_ONE, 'category_id', 'id'),
-                    'Information'=>array(self::HAS_ONE, 'author_id', 'id'),
+                    'tag'=>array(self::HAS_MANY, 'Tag', array('information_id'=>'id')),
+                    'category'=>array(self::HAS_ONE, 'Category', array('id'=>'category_id')),
+                    'author'=>array(self::HAS_ONE, 'User', array('id'=>'author_id')),
 		);
 	}
 
@@ -61,8 +61,8 @@ class Information extends CActiveRecord
 			'title' => 'Title',
 			'content' => 'Inhalt',
 			'author_id' => 'Author',
-			'category_id' => 'Category',
-			'timestamp' => 'Datum',
+			'category_id' => 'Kategorie',
+			'timestamp' => 'Letzte Änderung',
 		);
 	}
 

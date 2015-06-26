@@ -45,7 +45,7 @@ class User extends CActiveRecord {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'Information'=>array(self::HAS_MANY, 'id', 'author_id'),
+            'information'=>array(self::HAS_MANY, 'Information', array('author_id'=>'id')),
         );
     }
 
@@ -58,7 +58,7 @@ class User extends CActiveRecord {
             'firstname' => 'Vorname',
             'lastname' => 'Nachname',
             'email' => 'e-mail',
-            'username' => 'Username',
+            'username' => 'Nutzername',
             'password' => 'Password',
         );
     }
