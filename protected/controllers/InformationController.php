@@ -95,16 +95,54 @@ class InformationController extends Controller {
         }
         $this->render('save', array('model' => $model, 'modelTags' => $modelTags, 'categoryList' => $categoryList));
     }
-	
-	public function actionDelete() {
-	}
-	
-	/**
-	* Displays the view page
-	*/
-	public function actionView() {
-		$this->render('view');
-	}
+
+    public function actionDelete($id) {
+        $model = new Information;
+        $modelTag = new Tag();
+        
+        $Information = $model->findByPk($id);
+        $aTag = $modelTag->getByInformatonId($id)->findAll();
+        foreach ($aTag as $Tag) {
+            $Tag->delete();
+        }
+        $Information->delete();
+    }
+
+    /**
+     * Displays the view page
+     */
+    public function actionView($id) {
+        $model = new Information;
+
+        $criteria = new CDbCriteria;
+
+        $criteria->alias = 'information';
+        $criteria->with = array(
+            'tag' => array(
+                'select' => false,
+                'alias' => 'tag',
+            ),
+            'category' => array(
+                'select' => false,
+                'alias' => 'category',
+            ),
+            'author' => array(
+                'select' => false,
+                'alias' => 'author',
+            ),
+        );
+        $criteria->order = 'timestamp DESC';
+        $criteria->compare('information.id', $id);
+
+        $DataProvider = new CActiveDataProvider($model, array(
+            'criteria' => $criteria,
+            'pagination' => array(
+                'pageSize' => 10,
+            ),
+        ));
+
+        $this->render('view', array('dataProvider' => $DataProvider));
+    }
 
     /**
      * get all Data from tabel as array

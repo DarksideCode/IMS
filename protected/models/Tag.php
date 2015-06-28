@@ -58,6 +58,18 @@ class Tag extends CActiveRecord
 			'information_id' => 'Information',
 		);
 	}
+        
+        /**
+         * scoope to get all tags belonging to information with id = $id 
+         * @param type $id
+         */
+        public function getByInformatonId($id) {
+             $this->getDbCriteria()->mergeWith(array(
+                        'params' => array(':information_id'=>$id),
+                        'condition' => 'information_id=:information_id', // conditions set here
+            ));
+            return $this;
+        }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

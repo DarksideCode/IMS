@@ -73,7 +73,7 @@ echo $form->select2Group(
         )
 );
 ?>
-
+<span>Tag , getrennt eintippen</span>
 <?php
 echo $form->textFieldGroup($modelTags, 'designation', array(
     'value' => '',
