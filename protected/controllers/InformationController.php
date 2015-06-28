@@ -95,6 +95,16 @@ class InformationController extends Controller {
         }
         $this->render('save', array('model' => $model, 'modelTags' => $modelTags, 'categoryList' => $categoryList));
     }
+	
+	public function actionDelete() {
+	}
+	
+	/**
+	* Displays the view page
+	*/
+	public function actionView() {
+		$this->render('view');
+	}
 
     /**
      * get all Data from tabel as array
