@@ -135,7 +135,7 @@ class SiteController extends Controller
                         {
 
                                 $_POST[ 'User' ][ 'password' ] = md5( $_POST[ 'User' ][ 'password' ] );
-                                $model->attributes         = $_POST[ 'User' ];
+                                $model->attributes             = $_POST[ 'User' ];
 
                                 if ( $model->validate() )
                                 {

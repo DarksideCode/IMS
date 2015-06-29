@@ -33,9 +33,10 @@ class InformationController extends Controller
                     'pagination' => array (
                         'pageSize' => 10,
                     ),
-                ) );
+                    ) );
 
-                $this->render( 'index', array ( 'DataProvider' => $DataProvider ) );
+                $this->render( 'index',
+                    array ( 'DataProvider' => $DataProvider ) );
         }
 
         /**
@@ -73,7 +74,7 @@ class InformationController extends Controller
                                 {
                                         // than you can get id just like that
 
-                                        $informationID                  = $model->id; // this is inserted item id
+                                        $informationID                      = $model->id; // this is inserted item id
                                         $_POST[ 'Tag' ][ 'information_id' ] = $informationID;
 
                                         foreach ( (explode( ",",
@@ -83,7 +84,7 @@ class InformationController extends Controller
 
                                                 $_POST[ 'Tag' ][ 'designation' ]
                                                     = $value;
-                                                $modelTags->attributes       = $_POST[ 'Tag' ];
+                                                $modelTags->attributes           = $_POST[ 'Tag' ];
 
                                                 if ( $modelTags->validate() )
                                                 {
@@ -106,8 +107,7 @@ class InformationController extends Controller
                         else
                         {
                                 $error = $model->errors;
-                                print_r( $error );
-                                die();
+                                Yii::app()->user->setFlash( 'error', $error );
                         }
                 }
                 $this->render( 'save',
@@ -161,7 +161,7 @@ class InformationController extends Controller
                     'pagination' => array (
                         'pageSize' => 10,
                     ),
-                ) );
+                    ) );
 
                 $this->render( 'view', array ( 'dataProvider' => $DataProvider ) );
         }
@@ -180,7 +180,7 @@ class InformationController extends Controller
                 $dataProvider = new CSqlDataProvider( $sql,
                     array (
                     'totalItemCount' => $count,
-                ) );
+                    ) );
 
                 return $dataProvider->getData();
         }

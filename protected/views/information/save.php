@@ -117,6 +117,8 @@ echo $form->textFieldGroup( $modelTags, 'designation',
 </div>
 
 <!-- get current User-->
-<?php echo $form->hiddenField( $model, 'author_id',
-    array ( 'value' => Yii::app()->user->id ) ); ?>
+<?php
+echo $form->hiddenField( $model, 'author_id',
+    array ( 'value' => Yii::app()->user->id ) );
+?>
 <?php $this->endWidget(); ?>
