@@ -2,145 +2,166 @@
 
 class SiteController extends Controller
 {
-	/**
-	 * Declares class-based actions.
-	 */
-	public function actions()
-	{
-		return array(
-			// captcha action renders the CAPTCHA image displayed on the contact page
-			'captcha'=>array(
-				'class'=>'CCaptchaAction',
-				'backColor'=>0xFFFFFF,
-			),
-			// page action renders "static" pages stored under 'protected/views/site/pages'
-			// They can be accessed via: index.php?r=site/page&view=FileName
-			'page'=>array(
-				'class'=>'CViewAction',
-			),
-		);
-	}
 
-	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
-	 */
-	public function actionIndex()
-	{
-		$rawData = Yii::app()->db->createCommand("SELECT information.id, title, designation, username, timestamp 
+        /**
+         * Declares class-based actions.
+         */
+        public function actions()
+        {
+                return array (
+                    // captcha action renders the CAPTCHA image displayed on the contact page
+                    'captcha' => array (
+                        'class' => 'CCaptchaAction',
+                        'backColor' => 0xFFFFFF,
+                    ),
+                    // page action renders "static" pages stored under 'protected/views/site/pages'
+                    // They can be accessed via: index.php?r=site/page&view=FileName
+                    'page' => array (
+                        'class' => 'CViewAction',
+                    ),
+                );
+        }
+
+        /**
+         * This is the default 'index' action that is invoked
+         * when an action is not explicitly requested by users.
+         */
+        public function actionIndex()
+        {
+                $rawData = Yii::app()->db->createCommand( "SELECT information.id, title, designation, username, timestamp
 												FROM `information`, `user`, `category` 
 												WHERE user.id = information.author_id 
 												AND category.id = information.category_id
 												ORDER BY information.id
-												DESC LIMIT 0,10")->queryAll();
+												DESC LIMIT 0,10" )->queryAll();
 
-		if (!Yii::app()->user->isGuest){
-			$this->redirect(array('information/index', 'tableData'=>$rawData));
-		} else {
-			$this->render('index');
-		}
-	}
+                if ( !Yii::app()->user->isGuest )
+                {
+                        $this->redirect( array ( 'information/index', 'tableData' => $rawData ) );
+                }
+                else
+                {
+                        $this->render( 'index' );
+                }
+        }
 
-	/**
-	 * This is the action to handle external exceptions.
-	 */
-	public function actionError()
-	{
-		if($error=Yii::app()->errorHandler->error)
-		{
-			if(Yii::app()->request->isAjaxRequest)
-				echo $error['message'];
-			else
-				$this->render('error', $error);
-		}
-	}
-
-	/**
-	 * Displays the contact page
-	 */
-	public function actionContact()
-	{
-		$model=new ContactForm;
-		if(isset($_POST['ContactForm']))
-		{
-			$model->attributes=$_POST['ContactForm'];
-			if($model->validate())
-			{
-				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
-				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
-				$headers="From: $name <{$model->email}>\r\n".
-					"Reply-To: {$model->email}\r\n".
-					"MIME-Version: 1.0\r\n".
-					"Content-Type: text/plain; charset=UTF-8";
-
-				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
-				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
-				$this->refresh();
-			}
-		}
-		$this->render('contact',array('model'=>$model));
-	}
-
-	/**
-	 * Displays the login page
-	 */
-	public function actionLogin()
-	{
-		$model=new LoginForm;
-
-		// if it is ajax validation request
-		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-
-		// collect user input data
-		if(isset($_POST['LoginForm']))
-		{
-			$model->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to the previous page if valid
-			if($model->validate() && $model->login())
-				$this->redirect(Yii::app()->user->returnUrl);
-		}
-		// display the login form
-		$this->render('login',array('model'=>$model));
-	}
-
-	/**
-	 * Logs out the current user and redirect to homepage.
-	 */
-	public function actionLogout()
-	{
-		Yii::app()->user->logout();
-		$this->redirect(Yii::app()->homeUrl);
-	}
-        
         /**
-	 * Displays the Registration page
-	 */
-	public function actionRegistration()
-	{
-		$model=new User;
-		if(isset($_POST['User']))
-		{
-                        $_POST['User']['password'] = md5($_POST['User']['password']);
-			$model->attributes=$_POST['User'];
+         * This is the action to handle external exceptions.
+         */
+        public function actionError()
+        {
+                if ( $error = Yii::app()->errorHandler->error )
+                {
+                        if ( Yii::app()->request->isAjaxRequest )
+                                        echo $error[ 'message' ];
+                        else $this->render( 'error', $error );
+                }
+        }
 
-			if($model->validate())
-			{
-                                /**
-                                 * save form in DB
-                                 */
-                                $model->save();
+        /**
+         * Displays the contact page
+         */
+        public function actionContact()
+        {
+                $model = new ContactForm;
+                if ( isset( $_POST[ 'ContactForm' ] ) )
+                {
+                        $model->attributes = $_POST[ 'ContactForm' ];
+                        if ( $model->validate() )
+                        {
+                                $name    = '=?UTF-8?B?' . base64_encode( $model->name ) . '?=';
+                                $subject = '=?UTF-8?B?' . base64_encode( $model->subject ) . '?=';
+                                $headers = "From: $name <{$model->email}>\r\n" .
+                                    "Reply-To: {$model->email}\r\n" .
+                                    "MIME-Version: 1.0\r\n" .
+                                    "Content-Type: text/plain; charset=UTF-8";
 
-                                /**
-                                 * display flash message
-                                 */
-                                Yii::app()->user->setFlash('Registration','Thank you for your registration.');
+                                mail( Yii::app()->params[ 'adminEmail' ],
+                                    $subject, $model->body, $headers );
+                                Yii::app()->user->setFlash( 'contact',
+                                    'Thank you for contacting us. We will respond to you as soon as possible.' );
                                 $this->refresh();
-			}
-		}
-		$this->render('registration',array('model'=>$model));
-	}
+                        }
+                }
+                $this->render( 'contact', array ( 'model' => $model ) );
+        }
+
+        /**
+         * Displays the login page
+         */
+        public function actionLogin()
+        {
+                $model = new LoginForm;
+
+                // if it is ajax validation request
+                if ( isset( $_POST[ 'ajax' ] ) && $_POST[ 'ajax' ] === 'login-form' )
+                {
+                        echo CActiveForm::validate( $model );
+                        Yii::app()->end();
+                }
+
+                // collect user input data
+                if ( isset( $_POST[ 'LoginForm' ] ) )
+                {
+                        $model->attributes = $_POST[ 'LoginForm' ];
+                        // validate user input and redirect to the previous page if valid
+                        if ( $model->validate() && $model->login() )
+                                        $this->redirect( Yii::app()->user->returnUrl );
+                }
+                // display the login form
+                $this->render( 'login', array ( 'model' => $model ) );
+        }
+
+        /**
+         * Logs out the current user and redirect to homepage.
+         */
+        public function actionLogout()
+        {
+                Yii::app()->user->logout();
+                $this->redirect( Yii::app()->homeUrl );
+        }
+
+        /**
+         * Displays the Registration page
+         */
+        public function actionRegistration()
+        {
+                $model = new User;
+                if ( isset( $_POST[ 'User' ] ) )
+                {
+                        $transaction = $model->dbConnection->beginTransaction(); // Transaction begin
+
+                        try
+                        {
+
+                                $_POST[ 'User' ][ 'password' ] = md5( $_POST[ 'User' ][ 'password' ] );
+                                $model->attributes         = $_POST[ 'User' ];
+
+                                if ( $model->validate() )
+                                {
+                                        /**
+                                         * save form in DB
+                                         */
+                                        $model->save();
+
+                                        $transaction->commit();    // committing
+
+                                        /**
+                                         * display flash message
+                                         */
+                                        Yii::app()->user->setFlash( 'success',
+                                            'Thank you for your registration.' );
+                                        $this->refresh();
+                                }
+                        }
+                        catch ( Exception $error )
+                        {
+                                $transaction->rollBack();
+//                        throw new Exception($error);
+                                Yii::app()->user->setFlash( 'error',
+                                    'Nutzer bereits vorhanden.' );
+                        }
+                }
+                $this->render( 'registration', array ( 'model' => $model ) );
+        }
 }

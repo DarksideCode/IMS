@@ -7,36 +7,37 @@
  */
 class UserIdentity extends CUserIdentity
 {
-	/**
-	 * Authenticates a user.
-	 * The example implementation makes sure if the username and password
-	 * are both 'demo'.
-	 * In practical applications, this should be changed to authenticate
-	 * against some persistent user identity storage (e.g. database).
-	 * @return boolean whether authentication succeeds.
-	 */
-	public function authenticate()
-	{
-            $users=array();
-            $model = User::model();
-            $result = $model->findAll();
-            foreach ($result as $value) {
-                $users[$value->username]['password'] = $value->password;
-                $users[$value->username]['id'] = $value->id;
-            }
-    
+
+        /**
+         * Authenticates a user.
+         * The example implementation makes sure if the username and password
+         * are both 'demo'.
+         * In practical applications, this should be changed to authenticate
+         * against some persistent user identity storage (e.g. database).
+         * @return boolean whether authentication succeeds.
+         */
+        public function authenticate()
+        {
+                $users  = array ();
+                $model  = User::model();
+                $result = $model->findAll();
+                foreach ( $result as $value )
+                {
+                        $users[ $value->username ][ 'password' ] = $value->password;
+                        $users[ $value->username ][ 'id' ]       = $value->id;
+                }
+
 //		$users=array(
 //			// username => password
 //			'demo'=>'demo1',
 //			'admin'=>'admin',
 //		);
 
-		if(!isset($users[$this->username]))
-			$this->errorCode=self::ERROR_USERNAME_INVALID;
-		elseif($users[$this->username]['password']!==md5($this->password))
-			$this->errorCode=self::ERROR_PASSWORD_INVALID;
-		else
-			$this->errorCode=self::ERROR_NONE;
-		return !$this->errorCode;
-	}
+                if ( !isset( $users[ $this->username ] ) )
+                                $this->errorCode = self::ERROR_USERNAME_INVALID;
+                elseif ( $users[ $this->username ][ 'password' ] !== md5( $this->password ) )
+                                $this->errorCode = self::ERROR_PASSWORD_INVALID;
+                else $this->errorCode = self::ERROR_NONE;
+                return !$this->errorCode;
+        }
 }
