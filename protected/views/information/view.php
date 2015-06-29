@@ -14,4 +14,40 @@ $this->breadcrumbs = array (
     'Information',
 );
 ?>
-<h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
+
+<?php
+$dataProvider->getData();
+$aData             = $dataProvider->data;
+//        print_r( $dataProvider );
+
+foreach ( $aData as $data )
+{
+        ?>
+
+        <div>
+                <div>
+                        <h1><?php echo $data[ 'title' ] ?></h1>
+                        <p>
+                                <span> Tags: <?php
+                                        foreach ( $data[ 'tag' ] as $tag )
+                                        {
+                                                echo $tag[ 'designation' ] . ' ';
+                                        }
+                                        ?>
+                                </span>
+                                <span>Kategorie: <?php echo $data[ 'category' ][ 'designation' ] ?></span>
+                        </p>
+                </div>
+
+                <div>
+                        <?php echo $data[ 'content' ] ?>
+                </div>
+
+                <div>
+                        <span> Letzte Änderung: <?php echo $data[ 'timestamp' ] ?> von <?php echo $data[ 'author' ][ 'username' ] ?></span>
+                </div>
+        </div>
+
+        <?php
+}
+?>

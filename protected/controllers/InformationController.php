@@ -155,7 +155,7 @@ class InformationController extends Controller
                 $criteria->order = 'timestamp DESC';
                 $criteria->compare( 'information.id', $id );
 
-                $DataProvider = new CActiveDataProvider( $model,
+                $dataProvider = new CActiveDataProvider( $model,
                     array (
                     'criteria' => $criteria,
                     'pagination' => array (
@@ -163,7 +163,7 @@ class InformationController extends Controller
                     ),
                     ) );
 
-                $this->render( 'view', array ( 'dataProvider' => $DataProvider ) );
+                $this->render( 'view', array ( 'dataProvider' => $dataProvider ) );
         }
 
         /**
