@@ -165,6 +165,49 @@ class InformationController extends Controller
 
                 $this->render( 'view', array ( 'dataProvider' => $dataProvider ) );
         }
+		
+		public function actionEdit ( $id )
+		{
+			$model = new Information;
+
+			$criteria = new CDbCriteria;
+				
+			$categoryList = $this->getData( 'category' );
+			$categoryList = $this->formateArray( $categoryList, 'id', 'designation' );
+				
+			$criteria->alias = 'information';
+            $criteria->with  = array (
+						'tag' => array (
+							'select' => false,
+							'alias' => 'tag',
+						),
+						'category' => array (
+							'select' => false,
+							'alias' => 'category',
+						),
+						'author' => array (
+							'select' => false,
+							'alias' => 'author',
+						),
+					);
+			$criteria->order = 'timestamp DESC';
+			$criteria->compare( 'information.id', $id );
+
+			$dataProvider = new CActiveDataProvider( $model,
+			array (
+				'criteria' => $criteria,
+				'pagination' => array (
+					'pageSize' => 10,
+				),
+			) );
+			
+			if ( !Yii::app()->user->isGuest ) {
+				$this->render('edit', array ('dataProvider' => $dataProvider, 'categoryList' => $categoryList));
+			}
+			else {
+				$this->render('view');
+			}
+		}
 
         /**
          * get all Data from tabel as array
