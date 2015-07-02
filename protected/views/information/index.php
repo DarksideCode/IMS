@@ -42,7 +42,7 @@ $this->widget(
                 ),
                 'edit' => array (
                     'label' => 'Bearbeiten',
-                    'url' => 'Yii::app()->createUrl("information/save", array("id"=>$data["id"]))',
+                    'url' => 'Yii::app()->createUrl("information/edit", array("id"=>$data["id"]))',
                     'imageUrl' => Yii::app()->request->baseUrl . '/images/update.png',
                 //'options' => array(...),
                 //'click' => '...',
