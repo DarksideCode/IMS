@@ -162,7 +162,7 @@ class InformationController extends Controller
                         'pageSize' => 10,
                     ),
                     ) );
-
+				
                 $this->render( 'view', array ( 'dataProvider' => $dataProvider ) );
         }
 
@@ -170,8 +170,8 @@ class InformationController extends Controller
         {
 
                 $model = new Information;
-
                 $criteria = new CDbCriteria;
+				$modelUser = new User;
 
                 $categoryList = $this->getData( 'category' );
                 $categoryList = $this->formateArray( $categoryList, 'id',
@@ -219,16 +219,81 @@ class InformationController extends Controller
                         $modelTags->designation = $modelTags->designation . $tag[ 'designation' ] . ",";
                 }
 
+			if ( isset( $_POST[ 'Information' ] ) )
+			{
+				$user   = $modelUser->getUserByName( $_POST[ 'Information' ][ 'author_id' ] )->findAll();
+				$userID = $user[ 0 ][ 'id' ];
+				$model = Information::model()->findByPk($id);
+				$_POST[ 'Information' ][ 'author_id' ] = $userID;
+				
+				$model->title = $_POST['Information']['title'];
+				$model->content = $_POST['Information']['content'];
+				$model->category_id = $_POST['Information']['category_id'];
+				
+				//@todo saving in db don't work.
+				if ( $model->validate() )
+				{
+				/**
+				* save form in DB
+				*/
+				$model->update();
 
-                if ( !Yii::app()->user->isGuest )
-                {
-                        $this->render( 'edit',
-                            array ( 'model' => $model, 'modelTags' => $modelTags, 'categoryList' => $categoryList ) );
-                }
-                else
-                {
-                        $this->render( 'view' );
-                }
+				if ( $model->update() )
+				{
+					// than you can get id just like that
+					$informationID                      = $model->id; // this is inserted item id
+					$_POST[ 'Tag' ][ 'information_id' ] = $informationID;			
+
+					$modelTag = Tag::model()->findAll(array(
+						'condition' => 'information_id=:id',
+						'params' => array(':id'=>$id)
+					));
+					
+					foreach($modelTag as $tag)
+					{
+						$tag->delete();
+					}
+					
+						foreach ( (explode( ",", $_POST[ 'Tag' ][ 'designation' ] ) ) as $value )
+						{
+							$modelTags = new Tag;
+
+							$_POST[ 'Tag' ][ 'designation' ] = $value;
+							$modelTags->attributes           = $_POST[ 'Tag' ];
+
+							if ( $modelTags->validate() )
+							{
+								$modelTags->save();
+							}
+							else
+							{
+								$error = $modelTags->errors;
+							}
+						}
+					}
+
+					/**
+					 * display flash message
+					 */
+					Yii::app()->user->setFlash( 'success', 'Save complete.' );
+					$this->redirect( array ( 'information/index' ) );
+				}
+				else
+				{
+					$error = $model->errors;
+					Yii::app()->user->setFlash( 'error', $error );
+				}
+			}
+			
+			if ( !Yii::app()->user->isGuest )
+			{
+					$this->render( 'edit',
+						array ( 'model' => $model, 'modelTags' => $modelTags, 'categoryList' => $categoryList ) );
+			}
+			else
+			{
+					$this->render( 'view' );
+			}
         }
 
         /**
