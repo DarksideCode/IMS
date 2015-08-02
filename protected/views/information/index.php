@@ -15,16 +15,17 @@ $this->breadcrumbs = array (
 );
 ?>
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
-
+<div id="tabelBody">
 <?php
 $this->widget(
     'booster.widgets.TbGridView',
     array (
-    'id' => 'id',
+    'id' => 'information-list',
     'dataProvider' => $DataProvider,
     'type' => 'striped bordered',
     'template' => "{items}{pager}",
     'enablePagination' => true,
+    'filter' => $model,
     'columns' => array (
         'title',
         'category.designation',
@@ -61,3 +62,4 @@ $this->widget(
     )
 );
 ?>
+</div>
