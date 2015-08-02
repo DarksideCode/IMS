@@ -23,7 +23,8 @@ $this->widget(
     'id' => 'id',
     'dataProvider' => $DataProvider,
     'type' => 'striped bordered',
-    'template' => "{items}",
+    'template' => "{items}{pager}",
+    'enablePagination' => true,
     'columns' => array (
         'title',
         'category.designation',
