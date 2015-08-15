@@ -39,6 +39,54 @@ class InformationController extends Controller
                     array ( 'DataProvider' => $DataProvider, 'model' => $model ) );
         }
 
+        public function actionSearch( $value )
+        {
+
+                $model = new Information;
+
+                $criteria = new CDbCriteria;
+
+                $criteria->alias = 'information';
+                $criteria->with  = array (
+                    'tag' => array (
+                        'alias' => 'tag',
+                        'select' => false,
+                    ),
+                    'category' => array (
+                        'alias' => 'category',
+                        'select' => false,
+                    ),
+                    'author' => array (
+                        'alias' => 'author',
+                        'select' => false,
+                    ),
+                );
+                $criteria->order = 'timestamp DESC';
+
+                if ( isset( $value ) )
+                {
+//                        $criteria->compare( 'tag.designation', $value, true,
+//                            'OR' );
+                        $criteria->compare( 'category.designation', $value,
+                            true, 'OR' );
+                        $criteria->compare( 'author.username', $value, true,
+                            'OR' );
+                        $criteria->compare( 'title', $value, true,
+                            'OR' );
+                }
+
+                $DataProvider = new CActiveDataProvider( $model,
+                    array (
+                    'criteria' => $criteria,
+                    'pagination' => array (
+                        'pageSize' => 10,
+                    ),
+                    ) );
+
+                $this->render( '_list',
+                    array ( 'DataProvider' => $DataProvider, 'model' => $model ) );
+        }
+
         /**
          * Displays the new Information page
          */
@@ -247,7 +295,7 @@ class InformationController extends Controller
                                         $modelTag = Tag::model()->findAll( array (
                                             'condition' => 'information_id=:id',
                                             'params' => array ( ':id' => $id )
-                                        ) );
+                                            ) );
 
                                         foreach ( $modelTag as $tag )
                                         {

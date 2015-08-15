@@ -15,51 +15,49 @@ $this->breadcrumbs = array (
 );
 ?>
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
-<div id="tabelBody">
+
 <?php
-$this->widget(
-    'booster.widgets.TbGridView',
-    array (
-    'id' => 'information-list',
-    'dataProvider' => $DataProvider,
-    'type' => 'striped bordered',
-    'template' => "{items}{pager}",
-    'enablePagination' => true,
-    'filter' => $model,
-    'columns' => array (
-        'title',
-        'category.designation',
-        'author.username',
-        'timestamp',
-        array (
-            'class' => 'CButtonColumn',
-            'template' => '{view}{edit}{delete}',
-            'buttons' => array (
-                'view' => array (
-                    'label' => 'Anzeigen',
-                    'url' => 'Yii::app()->createUrl("information/view", array("id"=>$data["id"]))',
-                    'imageUrl' => Yii::app()->request->baseUrl . '/images/view.png',
-                //'options' => array(...),
-                //'click' => '...',
-                ),
-                'edit' => array (
-                    'label' => 'Bearbeiten',
-                    'url' => 'Yii::app()->createUrl("information/edit", array("id"=>$data["id"]))',
-                    'imageUrl' => Yii::app()->request->baseUrl . '/images/update.png',
-                //'options' => array(...),
-                //'click' => '...',
-                ),
-                'delete' => array (
-                    'label' => 'Löschen',
-                    'url' => 'Yii::app()->createUrl("information/delete", array("id"=>$data["id"]))',
-                    'imageUrl' => Yii::app()->request->baseUrl . '/images/delete.png',
-                //'options' => array(...),
-                //'click' => '...',
-                ),
-            ),
-        ),
-    )
-    )
-);
+$Script = '$(function() {
+                $( "#search-bar" ).change(function() {
+                        $.ajax({
+                                method: "GET",
+                                url: "/IMS/source/index.php/information/search?value="+$(this).attr("value"),
+                        }).done(function( data ) {
+                                $("#tabelBody").children().remove();
+                                var html = $(data).find("#content").html();
+                                $("#tabelBody").append(html);
+                        });
+                });
+        });
+    ';
+
+Yii::app()->clientScript->registerScript( 'search', $Script );
 ?>
+
+<div>
+        <?php
+        $this->widget(
+            'booster.widgets.TbNavbar',
+            array (
+            'type' => null, // null or 'inverse'
+//            'brand' => 'Project name',
+            'brandUrl' => '#',
+            'collapse' => true, // requires bootstrap-responsive.css
+            'fixed' => false,
+            'fluid' => true,
+            'items' => array (
+                '<form class="navbar-form navbar-left" action=""><div class="form-group">'
+                . '<input type="text" id="search-bar" class="form-control" placeholder="Search"></div>'
+                . '</form>',
+            ),
+            )
+        );
+        ?>
+</div>
+
+<div id="tabelBody">
+        <?php
+        $this->renderPartial( '_list',
+            array ( 'DataProvider' => $DataProvider, 'model' => $model ) );
+        ?>
 </div>
