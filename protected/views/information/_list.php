@@ -7,7 +7,7 @@ $this->widget(
     'type' => 'striped bordered',
     'template' => "{items}{pager}",
     'enablePagination' => true,
-    'filter' => $model,
+//    'filter' => $model,
     'columns' => array (
         'title',
         'category.designation',

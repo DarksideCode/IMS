@@ -17,8 +17,9 @@ $this->breadcrumbs = array (
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>
 
 <?php
-$Script = '$(function() {
-                $( "#search-bar" ).change(function() {
+$Script            = '$(function() {
+                $( "#search-bar" ).change(function(event) {
+                        event.preventDefault();
                         $.ajax({
                                 method: "GET",
                                 url: "/IMS/source/index.php/information/search?value="+$(this).attr("value"),
@@ -34,25 +35,10 @@ $Script = '$(function() {
 Yii::app()->clientScript->registerScript( 'search', $Script );
 ?>
 
-<div>
-        <?php
-        $this->widget(
-            'booster.widgets.TbNavbar',
-            array (
-            'type' => null, // null or 'inverse'
-//            'brand' => 'Project name',
-            'brandUrl' => '#',
-            'collapse' => true, // requires bootstrap-responsive.css
-            'fixed' => false,
-            'fluid' => true,
-            'items' => array (
-                '<form class="navbar-form navbar-left" action=""><div class="form-group">'
-                . '<input type="text" id="search-bar" class="form-control" placeholder="Search"></div>'
-                . '</form>',
-            ),
-            )
-        );
-        ?>
+<div class="search-bar">
+        <form class="navbar-form navbar-left" action=""><div class="form-group">
+                        <input type="text" id="search-bar" class="form-control" placeholder="Search"></div>
+        </form>
 </div>
 
 <div id="tabelBody">
