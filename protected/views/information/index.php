@@ -18,7 +18,7 @@ $this->breadcrumbs = array (
 
 <?php
 $Script            = '$(function() {
-                $( "#search-bar" ).change(function(event) {
+                $( "#search-bar" ).keyup(function(event) {
                         event.preventDefault();
                         $.ajax({
                                 method: "GET",
