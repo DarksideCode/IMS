@@ -35,7 +35,7 @@
                                     array (
                                     'items' => array (
                                         array ( 'label' => 'Home', 'url' => array (
-                                                '/information/index' ) ),
+                                                '/information/index' ), 'visible' => !Yii::app()->user->isGuest ),
 //				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 //				array('label'=>'Contact', 'url'=>array('/site/contact')),
                                         array ( 'label' => 'Registrieren', 'url' => array (
